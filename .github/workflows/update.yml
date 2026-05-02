@@ -23,14 +23,7 @@ jobs:
       - name: Ejecutar Scraping
         run: python actualizador.py
         
-      - name: Guardar cambios en GitHub
-        run: |
-          git config --global user.name 'Bot Precios'
-          git config --global user.email 'bot@precios.com'
-          git add base_de_datos_precio.json
-          git commit -m "Precios actualizados $(date)" || echo "Sin cambios detectados"
-          git push
-          - name: Guardar cambios en GitHub
+      -- name: Guardar cambios en GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -39,3 +32,4 @@ jobs:
           git add base_de_datos_precio.json
           # Solo hace commit si hay cambios reales en el JSON
           git diff --quiet && git diff --staged --quiet || (git commit -m "Precios actualizados $(date)" && git push)
+          
