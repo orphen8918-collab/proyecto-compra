@@ -1,7 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Comparador de Precios</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .producto { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; shadow: 2px 2px 5px #ccc; }
+        .precio { font-weight: bold; color: green; font-size: 1.2em; }
+    </style>
+</head>
 <body>
-    <h1>Servidor de Datos Activo</h1>
-    <p>Si estás viendo esto, tu base de datos JSON debería estar disponible.</p>
+    <h1>Lista de Precios Actualizada</h1>
+    <div id="contenedor">Cargando precios...</div>
+
+    <script>
+        async function obtenerPrecios() {
+            const url = "TU_URL_DE_GITHUB_AQUI/base_de_datos_precio.json";
+            const res = await fetch(url);
+            const datos = await res.json();
+            
+            let html = "";
+            datos.productos.forEach(p => {
+                html += `
+                    <div class="producto">
+                        <h3>${p.nombre}</h3>
+                        <p>Mercadona: <span class="precio">${p.precios.mercadona || 'No disponible'} €</span></p>
+                    </div>
+                `;
+            });
+            document.getElementById("contenedor").innerHTML = html;
+        }
+        obtenerPrecios();
+    </script>
 </body>
 </html>
