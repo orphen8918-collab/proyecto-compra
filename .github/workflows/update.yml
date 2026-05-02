@@ -1,7 +1,7 @@
 name: Actualizacion de Precios
 on:
   schedule:
-    - cron: '0 0 * * *' # Se ejecuta cada 24 horas
+    - cron: '0 0 * * *' 
   workflow_dispatch:
 
 jobs:
@@ -9,25 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      
+      - name: Configurar Python
+        uses: setup-python@v4
         with:
           python-version: '3.9'
+          
       - name: Instalar librerias
-        run: pip install -r requirements.txt
+        run: |
+          pip install requests beautifulsoup4
+          
       - name: Ejecutar Scraping
         run: python actualizador.py
-      - name: Guardar en base de datos
+        
+      - name: Guardar cambios en GitHub
         run: |
           git config --global user.name 'Bot Precios'
           git config --global user.email 'bot@precios.com'
-          git add. base_de_datos_precio.json
-          git commit -m "Actualizacion automatica" || exit 0
-          git push
-- name: Guardar en base de datos
-        run: |
-          git config --global user.name 'Bot Precios'
-          git config --global user.email 'bot@precios.com'
-          git add .
-          # El siguiente comando evita que el proceso falle si no hay cambios en los precios
-          git commit -m "Actualizacion automatica $(date)" || echo "No hay cambios para guardar"
+          git add base_de_datos_precio.json
+          # El comando siguiente permite que si no hay cambios, el bot no "explote"
+          git commit -m "Precios actualizados $(date)" || echo "Sin cambios detectados"
           git push
