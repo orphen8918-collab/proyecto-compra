@@ -8,7 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Descargar codigo
+        uses: actions/checkout@v3
       
       - name: Configurar Python
         uses: actions/setup-python@v4
@@ -27,6 +28,5 @@ jobs:
           git config --global user.name 'Bot Precios'
           git config --global user.email 'bot@precios.com'
           git add base_de_datos_precio.json
-          # El comando siguiente permite que si no hay cambios, el bot no "explote"
           git commit -m "Precios actualizados $(date)" || echo "Sin cambios detectados"
           git push
