@@ -1,0 +1,25 @@
+name: Actualizacion de Precios
+on:
+  schedule:
+    - cron: '0 0 * * *' # Se ejecuta cada 24 horas
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Instalar librerias
+        run: pip install -r requirements.txt
+      - name: Ejecutar Scraping
+        run: python actualizador.py
+      - name: Guardar en base de datos
+        run: |
+          git config --global user.name 'Bot Precios'
+          git config --global user.email 'bot@precios.com'
+          git add base_de_datos_precio.json
+          git commit -m "Actualizacion automatica" || exit 0
+          git push
