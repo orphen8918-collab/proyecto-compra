@@ -1,35 +1,50 @@
 name: Actualizacion de Precios
+
 on:
   schedule:
-    - cron: '0 0 * * *' 
+    # Se ejecuta automáticamente a las 00:00 cada día
+    - cron: '0 0 * * *'
+  # Permite ejecutarlo manualmente desde la pestaña Actions
   workflow_dispatch:
+
+# Permisos necesarios para que el bot pueda escribir el archivo JSON en tu repositorio
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # 1. Descarga el código de tu repositorio al servidor virtual
       - name: Descargar codigo
         uses: actions/checkout@v3
-      
+
+      # 2. Instala Python en el servidor
       - name: Configurar Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-          
+
+      # 3. Instala las librerías necesarias
       - name: Instalar librerias
         run: |
           pip install requests beautifulsoup4
-          
+
+      # 4. Ejecuta tu script de scraping para generar el JSON
       - name: Ejecutar Scraping
         run: python actualizador.py
-        
-      -- name: Guardar cambios en GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 5. Guarda el archivo JSON actualizado en tu repositorio
+      - name: Guardar cambios en GitHub
         run: |
+          # Configura la identidad del bot
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add base_de_datos_precio.json
-          # Solo hace commit si hay cambios reales en el JSON
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Precios actualizados $(date)" && git push)
           
+          # Añade el archivo JSON al área de preparación
+          git add base_de_datos_precio.json
+          
+          # Solo hace commit y push si el archivo ha cambiado realmente.
+          # Si no hay cambios, no hace nada y evita el error 128.
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Precios actualizados $(date)" && git push)
