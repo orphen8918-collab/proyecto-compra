@@ -23,3 +23,11 @@ jobs:
           git add. base_de_datos_precio.json
           git commit -m "Actualizacion automatica" || exit 0
           git push
+- name: Guardar en base de datos
+        run: |
+          git config --global user.name 'Bot Precios'
+          git config --global user.email 'bot@precios.com'
+          git add .
+          # El siguiente comando evita que el proceso falle si no hay cambios en los precios
+          git commit -m "Actualizacion automatica $(date)" || echo "No hay cambios para guardar"
+          git push
