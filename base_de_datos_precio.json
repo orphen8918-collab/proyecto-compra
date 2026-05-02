@@ -1,1 +1,19 @@
-{}
+{
+    "ultima_actualizacion": "02/05/2026 16:28:16",
+    "productos": [
+        {
+            "nombre": "Arroz Redondo 1kg",
+            "precios": {},
+            "enlaces": {
+                "carrefour": "https://www.carrefour.es/supermercado/arroz-redondo-carrefour-1-kg/R-521004525/p"
+            }
+        },
+        {
+            "nombre": "Leche Entera 1L",
+            "precios": {},
+            "enlaces": {
+                "carrefour": "https://www.carrefour.es/supermercado/leche-entera-carrefour-1-l/R-521021495/p"
+            }
+        }
+    ]
+}
